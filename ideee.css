@@ -1,0 +1,1014 @@
+
+/* =============================================================================
+   VAADIN 25 LUMO THEME — "Medical Blue"
+   Smooth, elegant, kontrastreich: Marineblau + Weiß + Schwarz
+   Für medizinische Verwaltungs-Oberflächen (Patienten, Termine, Befunde, etc.)
+ 
+   Einbindung in Vaadin 25:
+     1. Kopiere diese Datei nach: frontend/themes/<dein-theme>/styles.css
+     2. In der @Theme-Annotation deiner AppShellConfigurator-Klasse den
+        Theme-Namen angeben.
+   ============================================================================= */
+ 
+/* =============================================================================
+   1. LUMO CUSTOM PROPERTIES — Globale Design-Tokens
+   ============================================================================= */
+ 
+html {
+  /* --- Primärfarben: Marineblau --- */
+  --lumo-primary-color: hsl(212, 72%, 28%);
+  --lumo-primary-color-50pct: hsla(212, 72%, 28%, 0.5);
+  --lumo-primary-color-10pct: hsla(212, 72%, 28%, 0.1);
+  --lumo-primary-text-color: hsl(212, 72%, 28%);
+  --lumo-primary-contrast-color: #ffffff;
+ 
+  /* --- Fehler / Warnung / Erfolg --- */
+  --lumo-error-color: hsl(0, 65%, 48%);
+  --lumo-error-color-50pct: hsla(0, 65%, 48%, 0.5);
+  --lumo-error-color-10pct: hsla(0, 65%, 48%, 0.1);
+  --lumo-error-text-color: hsl(0, 65%, 42%);
+ 
+  --lumo-success-color: hsl(158, 50%, 36%);
+  --lumo-success-color-50pct: hsla(158, 50%, 36%, 0.5);
+  --lumo-success-color-10pct: hsla(158, 50%, 36%, 0.1);
+  --lumo-success-text-color: hsl(158, 50%, 30%);
+ 
+  --lumo-warning-color: hsl(36, 85%, 50%);
+  --lumo-warning-color-10pct: hsla(36, 85%, 50%, 0.1);
+  --lumo-warning-text-color: hsl(36, 85%, 40%);
+ 
+  /* --- Hintergrund & Oberflächen --- */
+  --lumo-base-color: #ffffff;
+  --lumo-tint-5pct: hsla(0, 0%, 100%, 0.05);
+  --lumo-tint-10pct: hsla(0, 0%, 100%, 0.1);
+  --lumo-tint-20pct: hsla(0, 0%, 100%, 0.2);
+  --lumo-tint-30pct: hsla(0, 0%, 100%, 0.3);
+  --lumo-tint-40pct: hsla(0, 0%, 100%, 0.4);
+  --lumo-tint-50pct: hsla(0, 0%, 100%, 0.5);
+  --lumo-tint-60pct: hsla(0, 0%, 100%, 0.6);
+  --lumo-tint-70pct: hsla(0, 0%, 100%, 0.7);
+  --lumo-tint-80pct: hsla(0, 0%, 100%, 0.8);
+  --lumo-tint-90pct: hsla(0, 0%, 100%, 0.9);
+  --lumo-tint: #ffffff;
+ 
+  --lumo-shade-5pct: hsla(212, 30%, 14%, 0.05);
+  --lumo-shade-10pct: hsla(212, 30%, 14%, 0.1);
+  --lumo-shade-20pct: hsla(212, 30%, 14%, 0.2);
+  --lumo-shade-30pct: hsla(212, 30%, 14%, 0.3);
+  --lumo-shade-40pct: hsla(212, 30%, 14%, 0.4);
+  --lumo-shade-50pct: hsla(212, 30%, 14%, 0.5);
+  --lumo-shade-60pct: hsla(212, 30%, 14%, 0.6);
+  --lumo-shade-70pct: hsla(212, 30%, 14%, 0.7);
+  --lumo-shade-80pct: hsla(212, 30%, 14%, 0.8);
+  --lumo-shade-90pct: hsla(212, 30%, 14%, 0.9);
+  --lumo-shade: hsl(212, 30%, 14%);
+ 
+  /* --- Kontrast (Text-Farben) --- */
+  --lumo-contrast-5pct: hsla(212, 30%, 14%, 0.05);
+  --lumo-contrast-10pct: hsla(212, 30%, 14%, 0.1);
+  --lumo-contrast-20pct: hsla(212, 30%, 14%, 0.2);
+  --lumo-contrast-30pct: hsla(212, 30%, 14%, 0.3);
+  --lumo-contrast-40pct: hsla(212, 30%, 14%, 0.4);
+  --lumo-contrast-50pct: hsla(212, 30%, 14%, 0.5);
+  --lumo-contrast-60pct: hsla(212, 30%, 14%, 0.6);
+  --lumo-contrast-70pct: hsla(212, 30%, 14%, 0.7);
+  --lumo-contrast-80pct: hsla(212, 30%, 14%, 0.8);
+  --lumo-contrast-90pct: hsla(212, 30%, 14%, 0.9);
+  --lumo-contrast: hsl(212, 30%, 14%);
+ 
+  --lumo-header-text-color: hsl(212, 40%, 12%);
+  --lumo-body-text-color: hsl(212, 20%, 22%);
+  --lumo-secondary-text-color: hsl(212, 14%, 46%);
+  --lumo-tertiary-text-color: hsl(212, 10%, 60%);
+  --lumo-disabled-text-color: hsla(212, 14%, 46%, 0.5);
+ 
+  /* --- Typografie --- */
+  --lumo-font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --lumo-font-size-xxxl: 2rem;
+  --lumo-font-size-xxl: 1.625rem;
+  --lumo-font-size-xl: 1.375rem;
+  --lumo-font-size-l: 1.125rem;
+  --lumo-font-size-m: 0.9375rem;
+  --lumo-font-size-s: 0.8125rem;
+  --lumo-font-size-xs: 0.75rem;
+  --lumo-font-size-xxs: 0.6875rem;
+  --lumo-line-height-m: 1.6;
+  --lumo-line-height-s: 1.4;
+  --lumo-line-height-xs: 1.2;
+ 
+  /* --- Abstände --- */
+  --lumo-space-xs: 0.25rem;
+  --lumo-space-s: 0.5rem;
+  --lumo-space-m: 0.875rem;
+  --lumo-space-l: 1.25rem;
+  --lumo-space-xl: 1.75rem;
+  --lumo-space-wide-m: 0.875rem 1.5rem;
+  --lumo-space-tall-m: 1.5rem 0.875rem;
+ 
+  /* --- Border-Radius --- */
+  --lumo-border-radius-s: 4px;
+  --lumo-border-radius-m: 6px;
+  --lumo-border-radius-l: 10px;
+ 
+  /* --- Schatten --- */
+  --lumo-box-shadow-xs: 0 1px 3px 0 hsla(212, 30%, 14%, 0.06);
+  --lumo-box-shadow-s: 0 2px 6px -1px hsla(212, 30%, 14%, 0.08),
+                        0 1px 2px 0 hsla(212, 30%, 14%, 0.04);
+  --lumo-box-shadow-m: 0 4px 12px -2px hsla(212, 30%, 14%, 0.1),
+                        0 2px 4px -1px hsla(212, 30%, 14%, 0.06);
+  --lumo-box-shadow-l: 0 10px 30px -5px hsla(212, 30%, 14%, 0.12),
+                        0 4px 10px -3px hsla(212, 30%, 14%, 0.08);
+  --lumo-box-shadow-xl: 0 20px 50px -10px hsla(212, 30%, 14%, 0.16),
+                         0 8px 20px -6px hsla(212, 30%, 14%, 0.1);
+ 
+  /* --- Clickable-Cursor --- */
+  --lumo-clickable-cursor: pointer;
+}
+ 
+ 
+/* =============================================================================
+   2. APP LAYOUT — Navigation & Rahmen
+   ============================================================================= */
+ 
+vaadin-app-layout {
+  --vaadin-app-layout-navbar-background: hsl(212, 72%, 22%);
+  --vaadin-app-layout-touch-optimized: true;
+}
+ 
+vaadin-app-layout::part(navbar) {
+  background: linear-gradient(135deg, hsl(212, 72%, 22%) 0%, hsl(212, 60%, 30%) 100%);
+  color: #ffffff;
+  box-shadow: var(--lumo-box-shadow-s);
+  min-height: 56px;
+  padding: 0 var(--lumo-space-l);
+}
+ 
+vaadin-app-layout::part(drawer) {
+  background: hsl(212, 30%, 97%);
+  border-right: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+/* Drawer-Navigation */
+vaadin-app-layout vaadin-side-nav {
+  padding: var(--lumo-space-s);
+}
+ 
+vaadin-side-nav-item {
+  border-radius: var(--lumo-border-radius-m);
+  margin-bottom: 2px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+ 
+vaadin-side-nav-item:hover {
+  background-color: var(--lumo-primary-color-10pct);
+}
+ 
+vaadin-side-nav-item[active] {
+  background-color: var(--lumo-primary-color);
+  color: var(--lumo-primary-contrast-color);
+}
+ 
+vaadin-side-nav-item[active]:hover {
+  background-color: hsl(212, 72%, 24%);
+}
+ 
+ 
+/* =============================================================================
+   3. BUTTONS — Primär, Sekundär, Tertiary, Danger
+   ============================================================================= */
+ 
+vaadin-button {
+  border-radius: var(--lumo-border-radius-m);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  cursor: var(--lumo-clickable-cursor);
+}
+ 
+/* Primary */
+vaadin-button[theme~="primary"] {
+  background: linear-gradient(180deg, hsl(212, 72%, 32%) 0%, hsl(212, 72%, 26%) 100%);
+  box-shadow: 0 1px 3px hsla(212, 72%, 20%, 0.3),
+              inset 0 1px 0 hsla(0, 0%, 100%, 0.1);
+}
+ 
+vaadin-button[theme~="primary"]:hover {
+  background: linear-gradient(180deg, hsl(212, 72%, 36%) 0%, hsl(212, 72%, 30%) 100%);
+  box-shadow: 0 2px 6px hsla(212, 72%, 20%, 0.35),
+              inset 0 1px 0 hsla(0, 0%, 100%, 0.12);
+}
+ 
+vaadin-button[theme~="primary"]:active {
+  background: hsl(212, 72%, 22%);
+  box-shadow: inset 0 2px 4px hsla(212, 72%, 10%, 0.3);
+}
+ 
+/* Secondary (default) */
+vaadin-button:not([theme~="primary"]):not([theme~="tertiary"]):not([theme~="error"]) {
+  border: 1px solid var(--lumo-contrast-20pct);
+  background: var(--lumo-base-color);
+}
+ 
+vaadin-button:not([theme~="primary"]):not([theme~="tertiary"]):not([theme~="error"]):hover {
+  background: var(--lumo-contrast-5pct);
+  border-color: var(--lumo-contrast-30pct);
+}
+ 
+/* Tertiary */
+vaadin-button[theme~="tertiary"] {
+  color: var(--lumo-primary-text-color);
+}
+ 
+vaadin-button[theme~="tertiary"]:hover {
+  background: var(--lumo-primary-color-10pct);
+}
+ 
+/* Danger / Error */
+vaadin-button[theme~="error"] {
+  --lumo-primary-color: var(--lumo-error-color);
+  --lumo-primary-text-color: var(--lumo-error-text-color);
+}
+ 
+vaadin-button[theme~="error"][theme~="primary"] {
+  background: linear-gradient(180deg, hsl(0, 65%, 52%) 0%, hsl(0, 65%, 44%) 100%);
+}
+ 
+vaadin-button[theme~="error"][theme~="primary"]:hover {
+  background: linear-gradient(180deg, hsl(0, 65%, 56%) 0%, hsl(0, 65%, 48%) 100%);
+}
+ 
+/* Icon-Buttons */
+vaadin-button[theme~="icon"] {
+  border-radius: var(--lumo-border-radius-m);
+  min-width: 36px;
+}
+ 
+/* Small */
+vaadin-button[theme~="small"] {
+  font-size: var(--lumo-font-size-s);
+}
+ 
+ 
+/* =============================================================================
+   4. TEXT-FIELD, PASSWORD-FIELD, TEXT-AREA, NUMBER-FIELD, INTEGER-FIELD,
+      EMAIL-FIELD, COMBO-BOX, DATE-PICKER, TIME-PICKER, DATE-TIME-PICKER
+   ============================================================================= */
+ 
+vaadin-text-field,
+vaadin-password-field,
+vaadin-text-area,
+vaadin-number-field,
+vaadin-integer-field,
+vaadin-email-field,
+vaadin-combo-box,
+vaadin-date-picker,
+vaadin-time-picker,
+vaadin-date-time-picker,
+vaadin-select,
+vaadin-multi-select-combo-box {
+  --vaadin-input-field-border-radius: var(--lumo-border-radius-m);
+}
+ 
+vaadin-text-field::part(input-field),
+vaadin-password-field::part(input-field),
+vaadin-text-area::part(input-field),
+vaadin-number-field::part(input-field),
+vaadin-integer-field::part(input-field),
+vaadin-email-field::part(input-field),
+vaadin-combo-box::part(input-field),
+vaadin-date-picker::part(input-field),
+vaadin-time-picker::part(input-field),
+vaadin-date-time-picker::part(input-field),
+vaadin-select::part(input-field),
+vaadin-multi-select-combo-box::part(input-field) {
+  border: 1px solid var(--lumo-contrast-20pct);
+  background: var(--lumo-base-color);
+  border-radius: var(--lumo-border-radius-m);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+vaadin-text-field:hover::part(input-field),
+vaadin-password-field:hover::part(input-field),
+vaadin-text-area:hover::part(input-field),
+vaadin-number-field:hover::part(input-field),
+vaadin-integer-field:hover::part(input-field),
+vaadin-email-field:hover::part(input-field),
+vaadin-combo-box:hover::part(input-field),
+vaadin-date-picker:hover::part(input-field),
+vaadin-time-picker:hover::part(input-field),
+vaadin-date-time-picker:hover::part(input-field),
+vaadin-select:hover::part(input-field),
+vaadin-multi-select-combo-box:hover::part(input-field) {
+  border-color: var(--lumo-contrast-40pct);
+}
+ 
+vaadin-text-field[focused]::part(input-field),
+vaadin-password-field[focused]::part(input-field),
+vaadin-text-area[focused]::part(input-field),
+vaadin-number-field[focused]::part(input-field),
+vaadin-integer-field[focused]::part(input-field),
+vaadin-email-field[focused]::part(input-field),
+vaadin-combo-box[focused]::part(input-field),
+vaadin-date-picker[focused]::part(input-field),
+vaadin-time-picker[focused]::part(input-field),
+vaadin-date-time-picker[focused]::part(input-field),
+vaadin-select[focused]::part(input-field),
+vaadin-multi-select-combo-box[focused]::part(input-field) {
+  border-color: var(--lumo-primary-color);
+  box-shadow: 0 0 0 2px var(--lumo-primary-color-10pct);
+}
+ 
+/* Invalid / Error State */
+vaadin-text-field[invalid]::part(input-field),
+vaadin-password-field[invalid]::part(input-field),
+vaadin-text-area[invalid]::part(input-field),
+vaadin-number-field[invalid]::part(input-field),
+vaadin-integer-field[invalid]::part(input-field),
+vaadin-email-field[invalid]::part(input-field),
+vaadin-combo-box[invalid]::part(input-field),
+vaadin-date-picker[invalid]::part(input-field),
+vaadin-time-picker[invalid]::part(input-field),
+vaadin-date-time-picker[invalid]::part(input-field),
+vaadin-select[invalid]::part(input-field),
+vaadin-multi-select-combo-box[invalid]::part(input-field) {
+  border-color: var(--lumo-error-color);
+  box-shadow: 0 0 0 2px var(--lumo-error-color-10pct);
+}
+ 
+/* Readonly */
+vaadin-text-field[readonly]::part(input-field),
+vaadin-password-field[readonly]::part(input-field),
+vaadin-text-area[readonly]::part(input-field),
+vaadin-number-field[readonly]::part(input-field),
+vaadin-integer-field[readonly]::part(input-field),
+vaadin-email-field[readonly]::part(input-field) {
+  background: var(--lumo-contrast-5pct);
+  border-color: var(--lumo-contrast-10pct);
+}
+ 
+/* Labels */
+vaadin-text-field::part(label),
+vaadin-password-field::part(label),
+vaadin-text-area::part(label),
+vaadin-number-field::part(label),
+vaadin-integer-field::part(label),
+vaadin-email-field::part(label),
+vaadin-combo-box::part(label),
+vaadin-date-picker::part(label),
+vaadin-time-picker::part(label),
+vaadin-date-time-picker::part(label),
+vaadin-select::part(label),
+vaadin-multi-select-combo-box::part(label) {
+  font-weight: 500;
+  color: var(--lumo-body-text-color);
+  font-size: var(--lumo-font-size-s);
+}
+ 
+ 
+/* =============================================================================
+   5. CHECKBOX, RADIO-BUTTON
+   ============================================================================= */
+ 
+vaadin-checkbox::part(checkbox) {
+  border-radius: 3px;
+  border: 2px solid var(--lumo-contrast-30pct);
+  transition: all 0.15s ease;
+}
+ 
+vaadin-checkbox:hover::part(checkbox) {
+  border-color: var(--lumo-primary-color);
+}
+ 
+vaadin-checkbox[checked]::part(checkbox) {
+  background: var(--lumo-primary-color);
+  border-color: var(--lumo-primary-color);
+}
+ 
+vaadin-radio-button::part(radio) {
+  border: 2px solid var(--lumo-contrast-30pct);
+  transition: all 0.15s ease;
+}
+ 
+vaadin-radio-button:hover::part(radio) {
+  border-color: var(--lumo-primary-color);
+}
+ 
+vaadin-radio-button[checked]::part(radio) {
+  border-color: var(--lumo-primary-color);
+  background: var(--lumo-primary-color);
+}
+ 
+ 
+/* =============================================================================
+   6. GRID — Datentabellen
+   ============================================================================= */
+ 
+vaadin-grid {
+  --vaadin-grid-cell-background: var(--lumo-base-color);
+  border: 1px solid var(--lumo-contrast-10pct);
+  border-radius: var(--lumo-border-radius-l);
+  box-shadow: var(--lumo-box-shadow-xs);
+  overflow: hidden;
+}
+ 
+/* Header */
+vaadin-grid::part(header-cell) {
+  background: hsl(212, 30%, 96%);
+  font-weight: 600;
+  font-size: var(--lumo-font-size-s);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--lumo-secondary-text-color);
+  border-bottom: 2px solid var(--lumo-contrast-10pct);
+}
+ 
+/* Body Cells */
+vaadin-grid::part(cell) {
+  border-bottom: 1px solid var(--lumo-contrast-5pct);
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+  font-size: var(--lumo-font-size-m);
+}
+ 
+/* Zebrastreifen */
+vaadin-grid::part(even-row-cell) {
+  background: hsla(212, 30%, 96%, 0.5);
+}
+ 
+/* Hover */
+vaadin-grid::part(body-cell):hover {
+  background: var(--lumo-primary-color-10pct);
+}
+ 
+/* Selected Row */
+vaadin-grid::part(selected-row-cell) {
+  background: var(--lumo-primary-color-10pct);
+  border-left: 3px solid var(--lumo-primary-color);
+}
+ 
+/* First visible row */
+vaadin-grid::part(first-header-row-cell) {
+  border-top: none;
+}
+ 
+/* Footer */
+vaadin-grid::part(footer-cell) {
+  background: hsl(212, 30%, 97%);
+  font-weight: 600;
+  font-size: var(--lumo-font-size-s);
+  border-top: 2px solid var(--lumo-contrast-10pct);
+}
+ 
+/* Grid Sorter */
+vaadin-grid-sorter {
+  cursor: var(--lumo-clickable-cursor);
+}
+ 
+vaadin-grid-sorter:hover {
+  color: var(--lumo-primary-text-color);
+}
+ 
+/* Grid Filter */
+vaadin-grid-filter vaadin-text-field::part(input-field) {
+  font-size: var(--lumo-font-size-s);
+}
+ 
+ 
+/* =============================================================================
+   7. DIALOG & OVERLAY
+   ============================================================================= */
+ 
+vaadin-dialog-overlay::part(overlay) {
+  border-radius: var(--lumo-border-radius-l);
+  box-shadow: var(--lumo-box-shadow-xl);
+  border: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+vaadin-dialog-overlay::part(header) {
+  background: hsl(212, 30%, 97%);
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  padding: var(--lumo-space-m) var(--lumo-space-l);
+  font-weight: 600;
+  font-size: var(--lumo-font-size-l);
+  color: var(--lumo-header-text-color);
+}
+ 
+vaadin-dialog-overlay::part(content) {
+  padding: var(--lumo-space-l);
+}
+ 
+vaadin-dialog-overlay::part(footer) {
+  background: hsl(212, 30%, 97%);
+  border-top: 1px solid var(--lumo-contrast-10pct);
+  padding: var(--lumo-space-m) var(--lumo-space-l);
+}
+ 
+/* Confirm-Dialog */
+vaadin-confirm-dialog-overlay::part(overlay) {
+  border-radius: var(--lumo-border-radius-l);
+  box-shadow: var(--lumo-box-shadow-xl);
+}
+ 
+/* Overlay-Backdrop */
+vaadin-dialog-overlay::part(backdrop) {
+  background: hsla(212, 30%, 14%, 0.4);
+  backdrop-filter: blur(2px);
+}
+ 
+ 
+/* =============================================================================
+   8. TABS — Navigation & Ansichten
+   ============================================================================= */
+ 
+vaadin-tabs {
+  box-shadow: inset 0 -2px 0 0 var(--lumo-contrast-10pct);
+}
+ 
+vaadin-tab {
+  font-weight: 500;
+  color: var(--lumo-secondary-text-color);
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+  transition: color 0.15s ease;
+  cursor: var(--lumo-clickable-cursor);
+}
+ 
+vaadin-tab:hover {
+  color: var(--lumo-primary-text-color);
+}
+ 
+vaadin-tab[selected] {
+  color: var(--lumo-primary-text-color);
+  font-weight: 600;
+}
+ 
+vaadin-tab[selected]::after {
+  background: var(--lumo-primary-color);
+  border-radius: 2px 2px 0 0;
+  height: 3px;
+}
+ 
+ 
+/* =============================================================================
+   9. NOTIFICATION
+   ============================================================================= */
+ 
+vaadin-notification-card {
+  border-radius: var(--lumo-border-radius-m);
+  box-shadow: var(--lumo-box-shadow-l);
+  border-left: 4px solid var(--lumo-primary-color);
+}
+ 
+vaadin-notification-card[theme~="success"] {
+  border-left-color: var(--lumo-success-color);
+}
+ 
+vaadin-notification-card[theme~="error"] {
+  border-left-color: var(--lumo-error-color);
+}
+ 
+vaadin-notification-card[theme~="warning"] {
+  border-left-color: var(--lumo-warning-color);
+}
+ 
+ 
+/* =============================================================================
+   10. DETAILS — Akkordeon / Details View
+   ============================================================================= */
+ 
+vaadin-details {
+  border: 1px solid var(--lumo-contrast-10pct);
+  border-radius: var(--lumo-border-radius-m);
+  margin-bottom: var(--lumo-space-s);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+ 
+vaadin-details:hover {
+  box-shadow: var(--lumo-box-shadow-xs);
+}
+ 
+vaadin-details::part(summary) {
+  padding: var(--lumo-space-m) var(--lumo-space-l);
+  font-weight: 500;
+  cursor: var(--lumo-clickable-cursor);
+  background: var(--lumo-contrast-5pct);
+}
+ 
+vaadin-details[opened]::part(summary) {
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  color: var(--lumo-primary-text-color);
+}
+ 
+vaadin-details::part(content) {
+  padding: var(--lumo-space-l);
+}
+ 
+vaadin-accordion {
+  border: 1px solid var(--lumo-contrast-10pct);
+  border-radius: var(--lumo-border-radius-m);
+  overflow: hidden;
+}
+ 
+vaadin-accordion vaadin-details {
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+vaadin-accordion vaadin-details:last-child {
+  border-bottom: none;
+}
+ 
+ 
+/* =============================================================================
+   11. FORM LAYOUT
+   ============================================================================= */
+ 
+vaadin-form-layout {
+  --vaadin-form-layout-column-spacing: var(--lumo-space-l);
+}
+ 
+vaadin-form-item::part(label) {
+  font-weight: 500;
+  color: var(--lumo-body-text-color);
+}
+ 
+ 
+/* =============================================================================
+   12. UPLOAD
+   ============================================================================= */
+ 
+vaadin-upload {
+  border: 2px dashed var(--lumo-contrast-20pct);
+  border-radius: var(--lumo-border-radius-l);
+  padding: var(--lumo-space-l);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+ 
+vaadin-upload:hover {
+  border-color: var(--lumo-primary-color-50pct);
+  background: var(--lumo-primary-color-10pct);
+}
+ 
+vaadin-upload[dragover] {
+  border-color: var(--lumo-primary-color);
+  background: var(--lumo-primary-color-10pct);
+}
+ 
+ 
+/* =============================================================================
+   13. PROGRESS BAR
+   ============================================================================= */
+ 
+vaadin-progress-bar {
+  --vaadin-progress-bar-height: 6px;
+}
+ 
+vaadin-progress-bar::part(bar) {
+  border-radius: 3px;
+  background: var(--lumo-contrast-10pct);
+}
+ 
+vaadin-progress-bar::part(value) {
+  border-radius: 3px;
+  background: linear-gradient(90deg, hsl(212, 72%, 32%), hsl(212, 72%, 42%));
+}
+ 
+ 
+/* =============================================================================
+   14. CONTEXT MENU & MENU BAR
+   ============================================================================= */
+ 
+vaadin-context-menu-overlay::part(overlay) {
+  border-radius: var(--lumo-border-radius-m);
+  box-shadow: var(--lumo-box-shadow-l);
+  border: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+vaadin-context-menu-item:hover,
+vaadin-menu-bar-item:hover {
+  background: var(--lumo-primary-color-10pct);
+  color: var(--lumo-primary-text-color);
+}
+ 
+vaadin-menu-bar-button {
+  border-radius: var(--lumo-border-radius-m);
+  transition: all 0.15s ease;
+}
+ 
+ 
+/* =============================================================================
+   15. ICON BUTTON TOOLBAR (z.B. Edit, Delete, View)
+   ============================================================================= */
+ 
+/* Toolbar-Container Pattern */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--lumo-space-s);
+  padding: var(--lumo-space-m);
+  background: var(--lumo-base-color);
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+.toolbar vaadin-button {
+  min-width: auto;
+}
+ 
+ 
+/* =============================================================================
+   16. BADGES & TAGS (Theme-Varianten)
+   ============================================================================= */
+ 
+/* badge-Utility über Lumo-Theme-Attribut */
+[theme~="badge"] {
+  font-size: var(--lumo-font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: var(--lumo-border-radius-s);
+  padding: 0.2em 0.6em;
+}
+ 
+[theme~="badge"][theme~="success"] {
+  background: var(--lumo-success-color-10pct);
+  color: var(--lumo-success-text-color);
+}
+ 
+[theme~="badge"][theme~="error"] {
+  background: var(--lumo-error-color-10pct);
+  color: var(--lumo-error-text-color);
+}
+ 
+[theme~="badge"][theme~="warning"] {
+  background: var(--lumo-warning-color-10pct);
+  color: var(--lumo-warning-text-color);
+}
+ 
+[theme~="badge"][theme~="contrast"] {
+  background: var(--lumo-contrast-10pct);
+  color: var(--lumo-contrast-80pct);
+}
+ 
+/* Pill-Variante */
+[theme~="badge"][theme~="pill"] {
+  border-radius: 999px;
+}
+ 
+ 
+/* =============================================================================
+   17. SCROLLER & SCROLLBAR
+   ============================================================================= */
+ 
+vaadin-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lumo-contrast-20pct) transparent;
+}
+ 
+vaadin-scroller::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+ 
+vaadin-scroller::-webkit-scrollbar-thumb {
+  background: var(--lumo-contrast-20pct);
+  border-radius: 3px;
+}
+ 
+vaadin-scroller::-webkit-scrollbar-thumb:hover {
+  background: var(--lumo-contrast-30pct);
+}
+ 
+ 
+/* =============================================================================
+   18. TOOLTIP
+   ============================================================================= */
+ 
+vaadin-tooltip-overlay::part(overlay) {
+  background: hsl(212, 30%, 16%);
+  color: #ffffff;
+  font-size: var(--lumo-font-size-xs);
+  border-radius: var(--lumo-border-radius-s);
+  box-shadow: var(--lumo-box-shadow-m);
+  padding: var(--lumo-space-xs) var(--lumo-space-s);
+}
+ 
+ 
+/* =============================================================================
+   19. AVATAR & AVATAR-GROUP
+   ============================================================================= */
+ 
+vaadin-avatar {
+  --vaadin-avatar-size: 36px;
+}
+ 
+vaadin-avatar::part(abbr) {
+  background: var(--lumo-primary-color);
+  color: var(--lumo-primary-contrast-color);
+  font-weight: 600;
+}
+ 
+ 
+/* =============================================================================
+   20. SPLIT LAYOUT
+   ============================================================================= */
+ 
+vaadin-split-layout::part(splitter) {
+  background: var(--lumo-contrast-10pct);
+  min-width: 4px;
+  min-height: 4px;
+}
+ 
+vaadin-split-layout::part(handle) {
+  background: var(--lumo-contrast-30pct);
+  border-radius: 2px;
+}
+ 
+vaadin-split-layout::part(handle):hover {
+  background: var(--lumo-primary-color);
+}
+ 
+ 
+/* =============================================================================
+   21. CRUD — Daten-Management
+   ============================================================================= */
+ 
+vaadin-crud {
+  border: 1px solid var(--lumo-contrast-10pct);
+  border-radius: var(--lumo-border-radius-l);
+  overflow: hidden;
+  box-shadow: var(--lumo-box-shadow-s);
+}
+ 
+vaadin-crud::part(toolbar) {
+  background: hsl(212, 30%, 97%);
+  border-top: 1px solid var(--lumo-contrast-10pct);
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+}
+ 
+vaadin-crud-edit-column vaadin-button {
+  color: var(--lumo-primary-text-color);
+}
+ 
+ 
+/* =============================================================================
+   22. LOGIN — Anmelde-Seite (falls vorhanden)
+   ============================================================================= */
+ 
+vaadin-login-overlay::part(card) {
+  border-radius: var(--lumo-border-radius-l);
+  box-shadow: var(--lumo-box-shadow-xl);
+  border: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+vaadin-login-form {
+  --vaadin-login-form-max-width: 400px;
+}
+ 
+vaadin-login-form vaadin-button[theme~="primary"] {
+  width: 100%;
+}
+ 
+ 
+/* =============================================================================
+   23. HORIZONTAL / VERTICAL LAYOUT — Utility
+   ============================================================================= */
+ 
+vaadin-horizontal-layout[theme~="spacing"] {
+  gap: var(--lumo-space-m);
+}
+ 
+vaadin-vertical-layout[theme~="spacing"] {
+  gap: var(--lumo-space-m);
+}
+ 
+vaadin-vertical-layout[theme~="padding"] {
+  padding: var(--lumo-space-l);
+}
+ 
+ 
+/* =============================================================================
+   24. RICH-TEXT-EDITOR
+   ============================================================================= */
+ 
+vaadin-rich-text-editor {
+  border: 1px solid var(--lumo-contrast-20pct);
+  border-radius: var(--lumo-border-radius-m);
+}
+ 
+vaadin-rich-text-editor::part(toolbar) {
+  background: hsl(212, 30%, 97%);
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+}
+ 
+ 
+/* =============================================================================
+   25. MESSAGE LIST / MESSAGE INPUT
+   ============================================================================= */
+ 
+vaadin-message::part(header) {
+  font-weight: 600;
+  color: var(--lumo-header-text-color);
+}
+ 
+vaadin-message-input::part(input) {
+  border-radius: var(--lumo-border-radius-m);
+}
+ 
+ 
+/* =============================================================================
+   26. BOARD (Dashboard-Layout)
+   ============================================================================= */
+ 
+vaadin-board-row {
+  gap: var(--lumo-space-m);
+}
+ 
+ 
+/* =============================================================================
+   27. UTILITY — Hilfsklassen für Views
+   ============================================================================= */
+ 
+/* Card-Pattern */
+.card {
+  background: var(--lumo-base-color);
+  border: 1px solid var(--lumo-contrast-10pct);
+  border-radius: var(--lumo-border-radius-l);
+  padding: var(--lumo-space-l);
+  box-shadow: var(--lumo-box-shadow-xs);
+  transition: box-shadow 0.2s ease;
+}
+ 
+.card:hover {
+  box-shadow: var(--lumo-box-shadow-s);
+}
+ 
+/* Stat-Card (Dashboard) */
+.stat-card {
+  background: var(--lumo-base-color);
+  border: 1px solid var(--lumo-contrast-10pct);
+  border-radius: var(--lumo-border-radius-l);
+  padding: var(--lumo-space-l);
+  box-shadow: var(--lumo-box-shadow-xs);
+  border-top: 3px solid var(--lumo-primary-color);
+}
+ 
+.stat-card .stat-value {
+  font-size: var(--lumo-font-size-xxl);
+  font-weight: 700;
+  color: var(--lumo-header-text-color);
+  line-height: 1.2;
+}
+ 
+.stat-card .stat-label {
+  font-size: var(--lumo-font-size-s);
+  color: var(--lumo-secondary-text-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+ 
+/* Page-Header */
+.page-header {
+  padding: var(--lumo-space-l) 0;
+  border-bottom: 1px solid var(--lumo-contrast-10pct);
+  margin-bottom: var(--lumo-space-l);
+}
+ 
+.page-header h2 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--lumo-header-text-color);
+}
+ 
+/* Section Divider */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--lumo-contrast-10pct);
+  margin: var(--lumo-space-l) 0;
+}
+ 
+/* Status-Punkte */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: var(--lumo-space-xs);
+}
+ 
+.status-dot.active { background: var(--lumo-success-color); }
+.status-dot.inactive { background: var(--lumo-contrast-30pct); }
+.status-dot.warning { background: var(--lumo-warning-color); }
+.status-dot.error { background: var(--lumo-error-color); }
+ 
+/* Muted Text */
+.text-muted {
+  color: var(--lumo-secondary-text-color);
+}
+ 
+.text-small {
+  font-size: var(--lumo-font-size-s);
+}
+
+
+
