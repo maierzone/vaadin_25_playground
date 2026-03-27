@@ -1,37 +1,123 @@
+/* =============================================================================
+   LEGACY STYLES — SMP Application
+   =============================================================================
+
+   Structure:
+     1.  Design Tokens       — all CSS custom properties live here
+     2.  Navigation Bar
+     3.  Header
+     4.  Environment Indicators
+     5.  Background
+     6.  Reports & Filters
+     7.  Buttons — Common
+     8.  Buttons — Options
+     9.  Buttons — Action Buttons
+    10.  Buttons — Change Order
+    11.  Filter Inputs        — canonical class: .filter-field
+    12.  Filter Inputs — Special Fields
+    13.  Filter Inputs — Placeholder Text
+    14.  Filter Card Focus Effects
+    15.  List Container
+    16.  Utilities
+    17.  Dialogs
+    18.  Notifications
+    19.  Dashboard Cards
+    20.  Card Containers
+    21.  Labels
+    22.  Login
+    23.  Menu Bar
+    24.  Organization Buttons
+    25.  Loading Indicator
+
+   Migration note for filter inputs:
+     NEW filter inputs: add class="filter-field" to the Vaadin component.
+     The ID-prefix selectors in section 11 are kept only for backward
+     compatibility with existing elements; do NOT add new ID-based rules there.
+   ============================================================================= */
+
 @import './smp-theme/bananne-management.css';
 @import './smp-theme/ca-management.css';
 @import './smp-theme/runtime-deps-overview.css';
 @import './smp-theme/pst.css';
 @import './smp-theme/bm-org-style.css';
 
+
+/* =============================================================================
+   1. DESIGN TOKENS
+   ============================================================================= */
+
 :root {
-    --color-primary: #406995;
-    --color-primary-dark: #2F4D6F;
-    --color-primary-light: #4E749D;
-    --color-secondary: #314E6C;
-    --color-background: #EFF4F7;
-    --color-text-white: #ffffff;
-    --color-text-dark: #5c5c5c;
-    --color-success: #87B257;
-    --color-warning: #fdcd4a;
-    --color-danger: #DE2D34;
-    --color-danger-alt: #db3b36;
-    --color-error: #F65F6D;
-    --color-info: #1676f3;
-    --color-border-light: rgba(255, 255, 255, 0.3);
-    --color-border-focus: rgba(255, 255, 255, 0.7);
-    --border-radius: 6px;
-    --border-radius-lg: 24px;
-    --border-radius-xl: 20px;
-    --shadow-sm: 2px 2px 9px 0px rgba(0, 0, 0, 0.75);
-    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.3);
+    /* --- Brand / Primary Palette --- */
+    --color-primary:              #406995;
+    --color-primary-dark:         #2F4D6F;
+    --color-primary-light:        #4E749D;
+    --color-secondary:            #314E6C;
+
+    /* --- Semantic Status Colors --- */
+    --color-background:           #EFF4F7;
+    --color-success:              #87B257;
+    --color-warning:              #fdcd4a;
+    --color-danger:               #DE2D34;   /* was: --color-danger & --color-danger-alt */
+    --color-error:                #F65F6D;
+    --color-info:                 #1676f3;
+
+    /* --- Text --- */
+    --color-text-white:           #ffffff;
+    --color-text-dark:            #5c5c5c;
+    --color-text-link:            #0000ff;
+
+    /* --- Navigation --- */
+    --color-subnav-active-bg:     #E6F2FF;
+    --color-subnav-active-text:   #4D749F;
+    --color-header-border:        #3E668F;
+
+    /* --- Semantic Accent Colors --- */
+    --color-warning-text:         darkgoldenrod;
+    --color-label-zmo:            #2196F3;
+    --color-card-border:          #DEE0E2;
+
+    /* --- Special Field Highlight Backgrounds --- */
+    --color-field-highlight-blue:   #ADD8E6;   /* lightblue     */
+    --color-field-highlight-yellow: #FFFFE0;   /* lightyellow   */
+
+    /* --- Change Order Status --- */
+    --color-approve:              #228B22;   /* forestgreen  */
+    --color-approve-text:         #f5deb3;   /* wheat        */
+    --color-dismiss:              #CC0000;   /* dark red     */
+    --color-dismiss-text:         #f5deb3;   /* wheat        */
+
+    /* --- Loading Indicator Steps --- */
+    --color-loading-1:            #ADD8E6;   /* lightblue      */
+    --color-loading-2:            #6495ED;   /* cornflowerblue */
+    --color-loading-3:            #4169E1;   /* royalblue      */
+
+    /* --- Menu Bar --- */
+    --color-menubar-bg:           #000000;
+    --color-menubar-text:         mintcream;
+
+    /* --- Login --- */
+    --color-login-bg:             #F5F5F5;   /* whitesmoke */
+
+    /* --- Filter Input Borders (on primary background) --- */
+    --color-border-light:         rgba(255, 255, 255, 0.30);
+    --color-border-focus:         rgba(255, 255, 255, 0.70);
+
+    /* --- Border Radii (semantic names to avoid size-scale confusion) --- */
+    --border-radius-sm:           6px;    /* tabs, badges, indicators    */
+    --border-radius-button:       20px;   /* action/option buttons       */
+    --border-radius-card:         24px;   /* dashboard cards             */
+
+    /* --- Shadows --- */
+    --shadow-sm:  2px 2px 9px 0 rgba(0, 0, 0, 0.75);
+    --shadow-md:  0 10px 30px rgba(0, 0, 0, 0.05);
+    --shadow-lg:  0 20px 40px rgba(0, 0, 0, 0.30);
 }
 
 
-/* ===================================
-   NAVIGATION BAR
-   =================================== */
+/* =============================================================================
+   2. NAVIGATION BAR
+   ============================================================================= */
+
 .navbar-container {
     background-color: var(--color-primary);
 }
@@ -47,22 +133,24 @@
 
 vaadin-tab[selected].navbar-tab-bold {
     background-color: var(--color-primary-dark);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-sm);
 }
 
 vaadin-tab[selected].sub-navbar-tab-bold {
-    background-color: #E6F2FF;
-    color: #4D749F;
-    border-radius: var(--border-radius);
+    background-color: var(--color-subnav-active-bg);
+    color: var(--color-subnav-active-text);
+    border-radius: var(--border-radius-sm);
     transition: none;
 }
 
-/* ===================================
-   HEADER
-   =================================== */
+
+/* =============================================================================
+   3. HEADER
+   ============================================================================= */
+
 .header-container {
     background-color: var(--color-primary);
-    border-top: 2px solid #3E668F;
+    border-top: 2px solid var(--color-header-border);
 }
 
 .header-font {
@@ -81,16 +169,18 @@ vaadin-tab[selected].sub-navbar-tab-bold {
     font-size: 16px;
 }
 
-/* ===================================
-   ENVIRONMENT INDICATORS
-   =================================== */
+
+/* =============================================================================
+   4. ENVIRONMENT INDICATORS
+   ============================================================================= */
+
 .env-lbl-indicator {
     padding: 5px;
 }
 
 .evn-hl-indicator {
     align-items: center;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-sm);
     font-size: 16px;
     font-weight: bold;
     padding: 0;
@@ -100,29 +190,33 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 
 .env-ru-tu-indicator {
     background-color: var(--color-warning);
-    color: black;
+    color: var(--color-text-dark);
 }
 
 .env-pu-indicator {
-    background-color: var(--color-danger-alt);
+    background-color: var(--color-danger);
     color: var(--color-text-white);
 }
 
-/* ===================================
-   FOOTER & BACKGROUND
-   =================================== */
+
+/* =============================================================================
+   5. BACKGROUND
+   ============================================================================= */
+
 .site-background {
     background-color: var(--color-background);
 }
 
-/* ===================================
-   REPORTS & FILTERS
-   =================================== */
+
+/* =============================================================================
+   6. REPORTS & FILTERS
+   ============================================================================= */
+
 .report-container,
 .filter-container,
 .filter-container-hidden {
     background-color: var(--color-primary);
-    color: var(--color-primary);
+    color: var(--color-text-white);
 }
 
 .report-container,
@@ -145,7 +239,7 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 
 .filter-border-button,
 .report-border-button {
-    background-color: var(--color-primary-light) !important;
+    background-color: var(--color-primary-light);
     border: 1px solid var(--color-text-white);
     color: var(--color-text-white);
 }
@@ -155,41 +249,46 @@ vaadin-tab[selected].sub-navbar-tab-bold {
     color: var(--color-text-white);
 }
 
-/* ===================================
-   BUTTON STYLES - COMMON
-   =================================== */
+
+/* =============================================================================
+   7. BUTTONS — COMMON
+   ============================================================================= */
+
 .button-white {
-    background-color: white !important;
+    background-color: var(--color-text-white);
     color: var(--color-primary);
 }
 
 .button-green {
-    background-color: var(--color-success) !important;
+    background-color: var(--color-success);
     color: var(--color-text-white);
 }
 
 .button-disabled {
-    opacity: 0.5 !important;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .bold-text {
     font-weight: bold;
 }
 
-/* ===================================
-   BUTTON STYLES - OPTIONS
-   =================================== */
+
+/* =============================================================================
+   8. BUTTONS — OPTIONS
+   ============================================================================= */
+
 .button-options-edit {
-    background-color: lightyellow;
-    color: black;
+    background-color: var(--color-field-highlight-yellow);
+    color: var(--color-text-dark);
     max-width: 40px;
     min-width: 40px;
     width: 40px;
 }
 
 .button-options-delete {
-    border-radius: var(--border-radius-xl);
-    background-color: var(--color-danger) !important;
+    border-radius: var(--border-radius-button);
+    background-color: var(--color-danger);
     color: var(--color-text-white);
     display: inline-block;
     padding: 0;
@@ -198,16 +297,18 @@ vaadin-tab[selected].sub-navbar-tab-bold {
     max-width: 60px;
 }
 
-/* ===================================
-   BUTTON STYLES - ACTION BUTTONS
-   =================================== */
+
+/* =============================================================================
+   9. BUTTONS — ACTION BUTTONS
+   ============================================================================= */
+
 .button-download,
 .button-view,
 .button-edit,
 .button-remove,
 .button-create,
 .button-delete {
-    border-radius: var(--border-radius-xl);
+    border-radius: var(--border-radius-button);
     color: var(--color-text-white);
     display: inline-block;
     padding: 0;
@@ -215,7 +316,7 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 }
 
 .button-download {
-    background-color: var(--color-secondary) !important;
+    background-color: var(--color-secondary);
     max-height: 30px;
     max-width: 60px;
 }
@@ -223,35 +324,53 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 .button-view,
 .button-edit,
 .button-remove {
-    background-color: var(--color-info) !important;
+    background-color: var(--color-info);
     max-height: 30px;
     max-width: 30px;
 }
 
 .button-create {
-    background-color: var(--color-success) !important;
+    background-color: var(--color-success);
 }
 
 .button-delete {
-    background-color: var(--color-danger) !important;
+    background-color: var(--color-danger);
 }
 
-/* ===================================
-   CHANGE ORDER BUTTONS
-   =================================== */
+
+/* =============================================================================
+   10. BUTTONS — CHANGE ORDER
+   ============================================================================= */
+
 [id^="smp-changeorder-button-approve-"] {
-    background-color: green;
-    color: wheat;
+    background-color: var(--color-approve);
+    color: var(--color-approve-text);
 }
 
 [id^="smp-changeorder-button-dismiss-"] {
-    background-color: red;
-    color: wheat;
+    background-color: var(--color-dismiss);
+    color: var(--color-dismiss-text);
 }
 
-/* ===================================
-   FORM INPUTS - GENERIC FILTERS
-   =================================== */
+
+/* =============================================================================
+   11. FILTER INPUTS
+   =============================================================================
+
+   HOW TO USE:
+     - For new filter inputs: add class="filter-field" to the Vaadin component.
+       That is the only selector you need — no ID required.
+     - The theme attribute variant [theme~="filter-input-color"] also works.
+     - The ID-prefix selectors below are LEGACY. Do not add new ones.
+
+   WHY THE REPETITION:
+     Vaadin shadow DOM parts (::part()) cannot be targeted via a single shared
+     rule; each host selector must be repeated per part. The selector lists are
+     kept in sync intentionally — if you add a host selector, add it to ALL
+     blocks in this section.
+   ============================================================================= */
+
+/* --- color-scheme: must be set on the host element --- */
 #tslGenerationType,
 [id^="filter-zmo-"],
 [id^="filter-pstdienst-"],
@@ -259,11 +378,14 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-tsl-"],
 [id^="filter-cert-"],
 [id^="smp-berechtigungsmanagement-organization-filter-"],
-[id^="smp-changeorder-"] {
+[id^="smp-changeorder-"],
+.filter-field,
+.filter-input-color,
+[theme~="filter-input-color"] {
     color-scheme: light;
 }
 
-/* Input field styling */
+/* --- Input field background & border --- */
 #tslGenerationType::part(input-field),
 [id^="filter-zmo-"]::part(input-field),
 [id^="filter-pstdienst-"]::part(input-field),
@@ -272,8 +394,8 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]::part(input-field),
 [id^="smp-berechtigungsmanagement-organization-filter-"]::part(input-field),
 [id^="smp-changeorder-"]::part(input-field),
-.filter-input-color::part(input-field),
 .filter-field::part(input-field),
+.filter-input-color::part(input-field),
 [theme~="filter-input-color"]::part(input-field) {
     background-color: var(--color-primary-light);
     color: var(--color-text-white);
@@ -281,7 +403,7 @@ vaadin-tab[selected].sub-navbar-tab-bold {
     border-radius: var(--lumo-border-radius-m);
 }
 
-/* Focus state */
+/* --- Input field — focus state --- */
 #tslGenerationType:focus-within::part(input-field),
 [id^="filter-zmo-"]:focus-within::part(input-field),
 [id^="filter-pstdienst-"]:focus-within::part(input-field),
@@ -290,14 +412,14 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]:focus-within::part(input-field),
 [id^="smp-berechtigungsmanagement-organization-filter-"]:focus-within::part(input-field),
 [id^="smp-changeorder-"]:focus-within::part(input-field),
-.filter-input-color:focus-within::part(input-field),
 .filter-field:focus-within::part(input-field),
+.filter-input-color:focus-within::part(input-field),
 [theme~="filter-input-color"]:focus-within::part(input-field) {
     border-color: var(--color-border-focus);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
-/* Value/selected text */
+/* --- Selected / typed value text --- */
 #tslGenerationType::part(value),
 [id^="filter-zmo-"]::part(value),
 [id^="filter-pstdienst-"]::part(value),
@@ -306,13 +428,13 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]::part(value),
 [id^="smp-berechtigungsmanagement-organization-filter-"]::part(value),
 [id^="smp-changeorder-"]::part(value),
-.filter-input-color::part(value),
 .filter-field::part(value),
+.filter-input-color::part(value),
 [theme~="filter-input-color"]::part(value) {
     color: rgba(255, 255, 255, 0.85);
 }
 
-/* Toggle button */
+/* --- Toggle button (combo-box / date-picker arrow) --- */
 #tslGenerationType::part(toggle-button),
 [id^="filter-zmo-"]::part(toggle-button),
 [id^="filter-pstdienst-"]::part(toggle-button),
@@ -321,13 +443,13 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]::part(toggle-button),
 [id^="smp-berechtigungsmanagement-organization-filter-"]::part(toggle-button),
 [id^="smp-changeorder-"]::part(toggle-button),
-.filter-input-color::part(toggle-button),
 .filter-field::part(toggle-button),
+.filter-input-color::part(toggle-button),
 [theme~="filter-input-color"]::part(toggle-button) {
     color: var(--color-text-white);
 }
 
-/* Clear button */
+/* --- Clear button --- */
 #tslGenerationType::part(clear-button),
 [id^="filter-zmo-"]::part(clear-button),
 [id^="filter-pstdienst-"]::part(clear-button),
@@ -336,13 +458,13 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]::part(clear-button),
 [id^="smp-berechtigungsmanagement-organization-filter-"]::part(clear-button),
 [id^="smp-changeorder-"]::part(clear-button),
-.filter-input-color::part(clear-button),
 .filter-field::part(clear-button),
+.filter-input-color::part(clear-button),
 [theme~="filter-input-color"]::part(clear-button) {
     color: rgba(255, 255, 255, 0.75);
 }
 
-/* Label */
+/* --- Label --- */
 #tslGenerationType::part(label),
 [id^="filter-zmo-"]::part(label),
 [id^="filter-pstdienst-"]::part(label),
@@ -351,14 +473,15 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]::part(label),
 [id^="smp-berechtigungsmanagement-organization-filter-"]::part(label),
 [id^="smp-changeorder-"]::part(label),
-.filter-label-color::part(label),
 .filter-field::part(label),
+.filter-label-color::part(label),
+.filter-input-color::part(label),
 [theme~="filter-label-color"]::part(label),
 [theme~="filter-input-color"]::part(label) {
     color: rgba(255, 255, 255, 0.85);
 }
 
-/* Label on focus */
+/* --- Label — focus state --- */
 #tslGenerationType:focus-within::part(label),
 [id^="filter-zmo-"]:focus-within::part(label),
 [id^="filter-pstdienst-"]:focus-within::part(label),
@@ -367,97 +490,101 @@ vaadin-tab[selected].sub-navbar-tab-bold {
 [id^="filter-cert-"]:focus-within::part(label),
 [id^="smp-berechtigungsmanagement-organization-filter-"]:focus-within::part(label),
 [id^="smp-changeorder-"]:focus-within::part(label),
-.filter-label-color:focus-within::part(label),
 .filter-field:focus-within::part(label),
+.filter-label-color:focus-within::part(label),
+.filter-input-color:focus-within::part(label),
 [theme~="filter-label-color"]:focus-within::part(label),
 [theme~="filter-input-color"]:focus-within::part(label) {
     color: var(--color-text-white);
     font-weight: bold;
 }
 
-/* ===================================
-   FORM INPUTS - SPECIAL FIELDS
-   =================================== */
+
+/* =============================================================================
+   12. FILTER INPUTS — SPECIAL FIELDS
+   ============================================================================= */
+
 #zmo-comment-cert-concatenate-pst {
-    background-color: lightblue;
+    background-color: var(--color-field-highlight-blue);
 }
 
 #zmo-comment-cert-concatenate {
-    background-color: lightyellow;
+    background-color: var(--color-field-highlight-yellow);
 }
 
 #zmo-comment-cert-concatenate-pst::part(label),
 #zmo-comment-cert-concatenate::part(label) {
     border: 1px solid var(--lumo-contrast-20pct);
-    color: black;
-    border-radius: 20px;
+    color: var(--color-text-dark);
+    border-radius: var(--border-radius-button);
 }
 
-/* ===================================
-   FORM INPUTS - PLACEHOLDER TEXT
-   =================================== */
+
+/* =============================================================================
+   13. FILTER INPUTS — PLACEHOLDER TEXT
+   ============================================================================= */
+
 vaadin-text-field.filter-field {
-    --lumo-body-text-color: var(--color-text-white) !important;
-    --lumo-secondary-text-color: rgba(255, 255, 255, 0.7) !important;
+    --lumo-body-text-color: var(--color-text-white);
+    --lumo-secondary-text-color: rgba(255, 255, 255, 0.7);
 }
 
 vaadin-text-field.filter-field [slot="input"]::placeholder,
 vaadin-text-field.filter-field [slot="input"]::-webkit-input-placeholder {
-    color: var(--color-text-white) !important;
-    opacity: 1 !important;
-    -webkit-text-fill-color: var(--color-text-white) !important;
-}
-
-/* Date picker and combo box placeholders */
-vaadin-combo-box [slot="input"]::placeholder {
     color: var(--color-text-white);
     opacity: 1;
     -webkit-text-fill-color: var(--color-text-white);
 }
 
-/* ===================================
-   FILTER CARD FOCUS EFFECTS
-   =================================== */
+vaadin-combo-box.filter-field [slot="input"]::placeholder {
+    color: var(--color-text-white);
+    opacity: 1;
+    -webkit-text-fill-color: var(--color-text-white);
+}
+
+
+/* =============================================================================
+   14. FILTER CARD FOCUS EFFECTS
+   ============================================================================= */
+
 [id^="filter-card-"] vaadin-text-field::part(input-field) {
     transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
     border: 1px solid var(--lumo-contrast-20pct);
 }
 
 [id^="filter-card-"] vaadin-text-field[focus-ring]::part(input-field) {
-    box-shadow: 0 0 0 2px var(--lumo-base-color),
+    box-shadow:
+        0 0 0 2px var(--lumo-base-color),
         0 0 12px 2px rgba(255, 60, 60, 0.6);
     border-color: var(--lumo-error-color);
     animation: focus-pulse 2s infinite;
 }
 
 @keyframes focus-pulse {
-    0% {
-        box-shadow: 0 0 0 2px var(--lumo-base-color), 0 0 8px rgba(255, 60, 60, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 0 2px var(--lumo-base-color), 0 0 15px rgba(255, 165, 0, 0.7);
-    }
-    100% {
-        box-shadow: 0 0 0 2px var(--lumo-base-color), 0 0 8px rgba(255, 60, 60, 0.5);
-    }
+    0%   { box-shadow: 0 0 0 2px var(--lumo-base-color), 0 0 8px rgba(255, 60, 60, 0.5); }
+    50%  { box-shadow: 0 0 0 2px var(--lumo-base-color), 0 0 15px rgba(255, 165, 0, 0.7); }
+    100% { box-shadow: 0 0 0 2px var(--lumo-base-color), 0 0 8px rgba(255, 60, 60, 0.5); }
 }
 
-/* ===================================
-   LIST CONTAINER
-   =================================== */
+
+/* =============================================================================
+   15. LIST CONTAINER
+   ============================================================================= */
+
 .list-container {
     background-color: var(--color-text-white);
-    width: 100% !important;
-    margin-right: auto !important;
+    width: 100%;
 }
 
 .grid-label-counter {
     font-size: 14px;
 }
 
-/* ===================================
-   UTILITY CLASSES
-   =================================== */
+
+/* =============================================================================
+   16. UTILITIES
+   ============================================================================= */
+
 .left-padding-container {
     padding-left: 40px;
 }
@@ -468,11 +595,11 @@ vaadin-combo-box [slot="input"]::placeholder {
 
 .domain-link-label {
     text-decoration: underline;
-    color: #0000ff;
+    color: var(--color-text-link);
 }
 
 .exclamation-icon {
-    color: red;
+    color: var(--color-danger);
     width: 16px;
 }
 
@@ -481,7 +608,7 @@ vaadin-combo-box [slot="input"]::placeholder {
 }
 
 .required-indicator > label {
-    color: red;
+    color: var(--color-danger);
     padding-left: 5px;
 }
 
@@ -489,9 +616,11 @@ vaadin-combo-box [slot="input"]::placeholder {
     visibility: hidden;
 }
 
-/* ===================================
-   DIALOG STYLING
-   =================================== */
+
+/* =============================================================================
+   17. DIALOGS
+   ============================================================================= */
+
 .dialog-header {
     margin: auto;
 }
@@ -503,7 +632,7 @@ vaadin-combo-box [slot="input"]::placeholder {
 }
 
 vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="spacing"] {
-    display: block !important;
+    display: block;
     align-self: flex-end;
     width: 100%;
 }
@@ -519,24 +648,28 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
     margin-bottom: 0;
 }
 
-/* ===================================
-   NOTIFICATION STYLING
-   =================================== */
+
+/* =============================================================================
+   18. NOTIFICATIONS
+   ============================================================================= */
+
 .notification-warning {
-    color: darkgoldenrod;
+    color: var(--color-warning-text);
 }
 
 .organization-value-changed {
-    color: lightgreen !important;
+    color: var(--color-success);
 }
 
-/* ===================================
-   DASHBOARD CARDS
-   =================================== */
+
+/* =============================================================================
+   19. DASHBOARD CARDS
+   ============================================================================= */
+
 .smp-card,
 .smp-zmo-card {
     background: var(--lumo-contrast-30pct);
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-card);
     padding: var(--lumo-space-xl);
     box-shadow: var(--shadow-md);
     border: 1px solid var(--lumo-contrast-10pct);
@@ -550,22 +683,21 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
 .smp-card {
     width: 440px;
     height: 380px;
-    background: darkred var(--lumo-contrast-30pct);
 }
 
 .smp-zmo-card {
     width: 896px;
     height: 380px;
-    background: black var(--lumo-contrast-30pct);
 }
 
 .smp-card:hover,
 .smp-zmo-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
-    border-color: white var(--lumo-contrast-10pct);
+    border-color: var(--lumo-contrast-10pct);
 }
 
+/* Decorative top accent bar */
 .smp-card::before,
 .smp-zmo-card::before {
     content: "";
@@ -574,17 +706,18 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+        90deg,
         var(--lumo-contrast-90pct) 0%,
-        var(--lumo-error-color) 60%,
-        var(--lumo-warning-color) 100%);
+        var(--lumo-error-color)    60%,
+        var(--lumo-warning-color)  100%
+    );
     opacity: 0.7;
 }
 
-/* Card content styling */
 .card-icon {
     font-size: 2rem;
-    color: white var(--lumo-contrast-50pct);
+    color: var(--lumo-contrast-50pct);
     margin-bottom: var(--lumo-space-m);
     background: var(--lumo-contrast-30pct);
     padding: 12px;
@@ -618,35 +751,38 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
 }
 
 .smp-card-base-item-border {
-    border-bottom: #DEE0E2 1px solid;
+    border-bottom: 1px solid var(--color-card-border);
 }
 
+/* Renewal-alert variant — red text signals approaching expiry */
 .smp-card-renew-item-label {
     font-size: 14px;
-    color: red;
+    color: var(--color-danger);
     font-weight: bold;
 }
 
 .smp-card-renew-item-value {
-    color: red;
     font-size: 14px;
+    color: var(--color-danger);
 }
 
 .smp-card-renew-base-item {
-    color: red;
     padding: 6px;
+    color: var(--color-danger);
 }
 
 .smp-card-renew-base-item-border {
-    border-bottom: #DEE0E2 1px solid;
+    border-bottom: 1px solid var(--color-card-border);
 }
 
-/* ===================================
-   CARD CONTAINERS
-   =================================== */
+
+/* =============================================================================
+   20. CARD CONTAINERS
+   ============================================================================= */
+
 .dashboard-container {
     margin-top: 32px;
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .tsl-card-container,
@@ -660,11 +796,11 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
 .ca-card-warning,
 .zmo-card-warning {
     background-color: var(--color-error);
-    color: #EFF4f7;
+    color: var(--color-background);
     width: 100%;
     padding: 8px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
 }
 
 .changeorder-card-icon {
@@ -689,11 +825,13 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
     font-family: monospace;
 }
 
-/* ===================================
-   LABELS
-   =================================== */
+
+/* =============================================================================
+   21. LABELS
+   ============================================================================= */
+
 .zmo-label {
-    background-color: #2196F3;
+    background-color: var(--color-label-zmo);
     color: var(--color-text-white);
     padding: 6px 18px;
     border-radius: 16px;
@@ -705,51 +843,57 @@ vaadin-vertical-layout:has(.dialog-header) > vaadin-horizontal-layout[theme~="sp
     transition: transform 0.2s;
 }
 
-.omz-label:hover {
+.zmo-label:hover {
     transform: scale(1.05);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* ===================================
-   LOGIN
-   =================================== */
+
+/* =============================================================================
+   22. LOGIN
+   ============================================================================= */
+
 #smp-loginform {
-    background-color: whitesmoke;
+    background-color: var(--color-login-bg);
 }
 
-/* ===================================
-   MENU BAR
-   =================================== */
+
+/* =============================================================================
+   23. MENU BAR
+   ============================================================================= */
+
 #user-context-menu-item::part(content),
 #logout-menu-item::part(content) {
-    color: mintcream;
+    color: var(--color-menubar-text);
 }
 
 vaadin-menu-bar-button {
     color: var(--color-text-white);
-    opacity: 1;
     -webkit-text-fill-color: var(--color-text-white);
-    background-color: black;
+    background-color: var(--color-menubar-bg);
 }
 
-/* ===================================
-   ORGANIZATION BUTTONS
-   =================================== */
+
+/* =============================================================================
+   24. ORGANIZATION BUTTONS
+   ============================================================================= */
+
 vaadin-horizontal-layout:has([id^="smp-berechtigungsmanagement-organization-button-edit-"]),
 vaadin-horizontal-layout:has([id^="smp-berechtigungsmanagement-antragssteller-button-edit-"]) {
     margin-right: 100px;
 }
 
-/* ===================================
-   LOADING INDICATOR
-   =================================== */
+
+/* =============================================================================
+   25. LOADING INDICATOR
+   ============================================================================= */
+
 .v-loading-indicator {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    content: "";
     background-color: rgba(0, 0, 0, 0.5);
     background-image: url("img/loading.png");
     background-position: center;
@@ -759,7 +903,9 @@ vaadin-horizontal-layout:has([id^="smp-berechtigungsmanagement-antragssteller-bu
     z-index: 2147483647;
 }
 
-.v-loading-indicator:before {
+.v-loading-indicator::before {
+    content: "";
+    display: block;
     width: 38px;
     height: 38px;
     position: absolute;
@@ -768,26 +914,13 @@ vaadin-horizontal-layout:has([id^="smp-berechtigungsmanagement-antragssteller-bu
     margin: -19px 0 0 -19px;
     border-radius: 100%;
     animation: bouncedelay 1.2s infinite 0.4s ease-in-out;
-    content: "";
 }
 
-.v-loading-indicator.first:before {
-    background-color: lightblue;
-}
-
-.v-loading-indicator.second:before {
-    background-color: cornflowerblue;
-}
-
-.v-loading-indicator.third:before {
-    background-color: royalblue;
-}
+.v-loading-indicator.first::before  { background-color: var(--color-loading-1); }
+.v-loading-indicator.second::before { background-color: var(--color-loading-2); }
+.v-loading-indicator.third::before  { background-color: var(--color-loading-3); }
 
 @keyframes bouncedelay {
-    0%, 80%, 100% {
-        transform: scale(0);
-    }
-    40% {
-        transform: scale(1.0);
-    }
+    0%, 80%, 100% { transform: scale(0); }
+    40%           { transform: scale(1); }
 }
